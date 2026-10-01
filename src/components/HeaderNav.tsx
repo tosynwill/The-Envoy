@@ -1,7 +1,7 @@
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useLenis, useScrollTo } from '../lib/smooth-scroll'
-import { Logo } from './Logo'
+// import { Logo } from './Logo'
 import { EASE_OUT_EXPO } from './Reveal'
 
 export const NAV_LINKS = [
