@@ -45,32 +45,37 @@ function validate(f: Fields) {
   return errors
 }
 
-const ENDPOINT = import.meta.env.VITE_REGISTER_ENDPOINT as string | undefined
+const EMAILJS = {
+  serviceId: import.meta.env.VITE_EMAILJS_SERVICE_ID as string | undefined,
+  templateId: import.meta.env.VITE_EMAILJS_TEMPLATE_ID as string | undefined,
+  publicKey: import.meta.env.VITE_EMAILJS_PUBLIC_KEY as string | undefined,
+}
 
 async function submitRegistration(f: Fields) {
-  const payload = {
+  // EmailJS templates take flat string values – reference these as {{name}}, {{email}}, etc.
+  const params = {
     name: f.name.trim(),
     email: f.email.trim(),
     country: f.country.trim(),
-    city: f.city.trim(),
-    phone: f.phone.trim(),
-    interests: f.interests.map((id) => INTERESTS.find((i) => i.id === id)?.label ?? id),
-    note: f.note.trim(),
-    timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
-    submittedAt: new Date().toISOString(),
+    city: f.city.trim() || '—',
+    phone: f.phone.trim() || '—',
+    interests: f.interests
+      .map((id) => INTERESTS.find((i) => i.id === id)?.label ?? id)
+      .join(', '),
+    note: f.note.trim() || '—',
+    time_zone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    submitted_at: new Date().toUTCString(),
   }
-  if (!ENDPOINT) {
-    // No backend configured yet – see .env.example.
-    console.warn('[register] VITE_REGISTER_ENDPOINT is not set. Submission not sent:', payload)
+  const { serviceId, templateId, publicKey } = EMAILJS
+  if (!serviceId || !templateId || !publicKey) {
+    // EmailJS not configured yet – see .env.example.
+    console.warn('[register] EmailJS env vars are not set. Submission not sent:', params)
     await new Promise((r) => setTimeout(r, 900))
     return
   }
-  const res = await fetch(ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify(payload),
-  })
-  if (!res.ok) throw new Error(`Request failed (${res.status})`)
+  // Loaded on demand so the SDK isn't in the initial bundle.
+  const { default: emailjs } = await import('@emailjs/browser')
+  await emailjs.send(serviceId, templateId, params, { publicKey })
 }
 
 const inputCls =

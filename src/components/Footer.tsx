@@ -43,7 +43,7 @@ export function Footer() {
             </span>
           </div>
           <p className="mt-6 max-w-sm leading-relaxed text-muted">
-            An end-time global movement inspired by God — asking the Father for the nations, one
+            An end-time global movement inspired by G3:16 — asking the Father for the nations, one
             nation at a time.
           </p>
         </Reveal>

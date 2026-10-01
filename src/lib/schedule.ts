@@ -15,7 +15,7 @@ export const WORLD_CITIES = [
   { city: 'New York', timeZone: 'America/New_York' },
   { city: 'Lagos', timeZone: 'Africa/Lagos' },
   { city: 'Nairobi', timeZone: 'Africa/Nairobi' },
-  { city: 'Singapore', timeZone: 'Asia/Singapore' },
+  { city: 'Ghana', timeZone: 'Africa/Accra' },
   { city: 'Sydney', timeZone: 'Australia/Sydney' },
 ] as const
 

@@ -54,7 +54,7 @@ export function HeroSection() {
       >
         <MaskLine onMount delay={0.2}>
           <p className="mb-6 font-mono text-[11px] tracking-[0.32em] text-gold-soft sm:text-xs">
-            AN END-TIME GLOBAL MOVEMENT — INSPIRED BY GOD
+            AN END-TIME GLOBAL MOVEMENT — INSPIRED BY G3:16
           </p>
         </MaskLine>
 
@@ -78,7 +78,7 @@ export function HeroSection() {
           >
             <p className="text-lg leading-relaxed text-sand sm:text-xl sm:leading-[1.65]">
               We invite like-minded believers who desire to see God move in the nations of the
-              earth. The nations are His inheritance — will you ask of Him?
+              earth. The nations are our inheritance — will you ask of Him?
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-4 sm:gap-5">
               <button

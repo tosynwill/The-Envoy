@@ -87,7 +87,7 @@ export function ScriptureAltar() {
 
         <Reveal delay={0.15}>
           <p className="mt-12 text-lg text-muted sm:text-xl">
-            There is an urgent need for us to ask for the nations from the Father.
+            There is an urgent need for us to take the nations for Jesus in prayers.
           </p>
         </Reveal>
       </div>
