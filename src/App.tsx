@@ -2,6 +2,7 @@ import { MotionConfig } from 'motion/react'
 import { useEffect } from 'react'
 import { Toaster } from 'sonner'
 import { ApostleEndorsement } from './components/ApostleEndorsement'
+import { BooksPage, BooksThanksPage } from './components/BooksPage'
 import { EditorialMarquee } from './components/EditorialMarquee'
 import { EventsShowcase } from './components/EventsShowcase'
 import { Footer } from './components/Footer'
@@ -9,6 +10,7 @@ import { HeaderNav } from './components/HeaderNav'
 import { HeroSection } from './components/HeroSection'
 import { RegistrationForm } from './components/RegistrationForm'
 import { ScriptureAltar } from './components/ScriptureAltar'
+import { IS_HOME, PATH } from './lib/route'
 import { SmoothScroll, useScrollTo } from './lib/smooth-scroll'
 
 /** Honour deep links like /#register once the page has laid out. */
@@ -27,20 +29,30 @@ export default function App() {
       <SmoothScroll>
         <InitialHash />
         <div className="grain min-h-screen bg-ink text-cream antialiased">
-          <a
-            href="#register"
-            className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-ink"
-          >
-            Skip to registration
-          </a>
+          {IS_HOME && (
+            <a
+              href="#register"
+              className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[70] focus:rounded-full focus:bg-gold focus:px-4 focus:py-2 focus:text-ink"
+            >
+              Skip to registration
+            </a>
+          )}
           <HeaderNav />
           <main>
-            <HeroSection />
-            <EditorialMarquee />
-            <ScriptureAltar />
-            <EventsShowcase />
-            <RegistrationForm />
-            <ApostleEndorsement />
+            {PATH === '/books' ? (
+              <BooksPage />
+            ) : PATH === '/books/thanks' ? (
+              <BooksThanksPage />
+            ) : (
+              <>
+                <HeroSection />
+                <EditorialMarquee />
+                <ScriptureAltar />
+                <EventsShowcase />
+                <RegistrationForm />
+                <ApostleEndorsement />
+              </>
+            )}
           </main>
           <Footer />
         </div>

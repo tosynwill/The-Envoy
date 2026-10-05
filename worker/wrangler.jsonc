@@ -1,0 +1,23 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "envoy-books",
+  "main": "src/index.ts",
+  "account_id": "000b0e6e3821c221635ebfa3c175e0af",
+  "compatibility_date": "2026-10-01",
+  "observability": { "enabled": true },
+
+  // Ebook files live here, private. Upload them under the exact name used in
+  // each Stripe product's `ebook_file` metadata.
+  "r2_buckets": [{ "binding": "EBOOKS", "bucket_name": "envoy-ebooks" }],
+
+  // Non-secret settings. Secrets are set with `npx wrangler secret put <NAME>`:
+  //   STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, BREVO_API_KEY, DOWNLOAD_SECRET
+  "vars": {
+    "SENDER_EMAIL": "books@theenvoy.org",
+    "SENDER_NAME": "The Envoy",
+    "REPLY_TO": "tosynwill@yahoo.co.uk",
+    "ORDER_NOTIFY_EMAIL": "tosynwill@yahoo.co.uk",
+    "LINK_TTL_DAYS": "7",
+    "SITE_URL": "https://theenvoy.org"
+  }
+}

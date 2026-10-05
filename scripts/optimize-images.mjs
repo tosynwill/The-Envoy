@@ -16,6 +16,11 @@ const jobs = [
   // The Envoy logo has a dark hairline along its top edge – trim it off.
   { src: 'poweredBy2.jpg', name: 'logo-envoy', widths: [256], extract: { left: 0, top: 8, width: 903, height: 820 } },
   { src: 'poweredBy3.jpg', name: 'logo-glory', widths: [256] },
+  // Book covers. All About You's source is only 434px wide, so it gets a single size.
+  { src: 'all_about_you.jpeg', name: 'book-all-about-you', widths: [434] },
+  { src: 'day_one.jpeg', name: 'book-day-one', widths: [360, 720] },
+  { src: 'purpose.jpeg', name: 'book-purpose', widths: [360, 720] },
+  { src: 'just_one_word.jpeg', name: 'book-just-one-word', widths: [360, 720] },
 ]
 
 await mkdir(OUT, { recursive: true })

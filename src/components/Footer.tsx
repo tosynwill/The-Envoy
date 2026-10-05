@@ -1,5 +1,6 @@
 import { motion, useScroll, useTransform } from 'motion/react'
 import { useRef } from 'react'
+import { IS_HOME, sectionHref } from '../lib/route'
 import { formatTimeIn, useNextGathering, weekdayIn, WORLD_CITIES } from '../lib/schedule'
 import { useScrollTo } from '../lib/smooth-scroll'
 import { Logo } from './Logo'
@@ -8,6 +9,7 @@ import { Reveal } from './Reveal'
 const EXPLORE = [
   { label: 'The Mandate', href: '#scripture' },
   { label: 'The Operations', href: '#events' },
+  { label: 'Books', href: '/books' },
   { label: 'Register Interest', href: '#register' },
 ]
 
@@ -54,8 +56,10 @@ export function Footer() {
             {EXPLORE.map((link) => (
               <li key={link.href}>
                 <a
-                  href={link.href}
+                  href={link.href.startsWith('#') ? sectionHref(link.href) : link.href}
                   onClick={(e) => {
+                    // Smooth-scroll only within the home page; everything else is a normal link.
+                    if (!IS_HOME || !link.href.startsWith('#')) return
                     e.preventDefault()
                     scrollTo(link.href)
                   }}

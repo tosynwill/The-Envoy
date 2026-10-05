@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useScroll, useSpring } from 'motion/react'
 import { useEffect, useState } from 'react'
+import { IS_HOME, PATH, sectionHref } from '../lib/route'
 import { useLenis, useScrollTo } from '../lib/smooth-scroll'
 // import { Logo } from './Logo'
 import { EASE_OUT_EXPO } from './Reveal'
@@ -9,6 +10,9 @@ export const NAV_LINKS = [
   { label: 'The Operations', href: '#events' },
   { label: 'The Letter', href: '#letter' },
 ] as const
+
+/** Separate pages (not home-page sections). */
+export const PAGE_LINKS = [{ label: 'Books', href: '/books' }] as const
 
 /** Tracks which section is currently in the middle band of the viewport. */
 function useActiveSection(ids: string[]) {
@@ -60,6 +64,11 @@ export function HeaderNav() {
 
   const go = (href: string, focusId?: string) => {
     setOpen(false)
+    // Sections live on the home page – from elsewhere, load it at that section.
+    if (!IS_HOME) {
+      window.location.href = sectionHref(href)
+      return
+    }
     // Let the menu start closing before we glide away.
     requestAnimationFrame(() =>
       scrollTo(href, {
@@ -81,6 +90,10 @@ export function HeaderNav() {
             type="button"
             onClick={() => {
               setOpen(false)
+              if (!IS_HOME) {
+                window.location.href = '/'
+                return
+              }
               history.replaceState(null, '', ' ')
               lenis ? lenis.scrollTo(0, { duration: 1.8 }) : window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
@@ -100,7 +113,7 @@ export function HeaderNav() {
               return (
                 <a
                   key={link.href}
-                  href={link.href}
+                  href={sectionHref(link.href)}
                   onClick={(e) => {
                     e.preventDefault()
                     go(link.href)
@@ -118,6 +131,22 @@ export function HeaderNav() {
                       transition={{ type: 'spring', stiffness: 380, damping: 34 }}
                     />
                   )}
+                </a>
+              )
+            })}
+            {PAGE_LINKS.map((link) => {
+              const isActive = PATH.startsWith(link.href)
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? 'page' : undefined}
+                  className={`relative py-1 text-[0.95rem] transition-colors duration-300 ${
+                    isActive ? 'text-ivory' : 'text-sand hover:text-ivory'
+                  }`}
+                >
+                  {link.label}
+                  {isActive && <span className="absolute inset-x-0 -bottom-0.5 h-px bg-gold" />}
                 </a>
               )
             })}
@@ -177,11 +206,12 @@ export function HeaderNav() {
             className="fixed inset-0 z-40 flex flex-col bg-ink px-5 pt-28 pb-10 md:hidden"
           >
             <nav className="flex flex-col gap-2" aria-label="Mobile">
-              {[...NAV_LINKS, { label: 'Register Interest', href: '#register' }].map((link, i) => (
+              {[...NAV_LINKS, ...PAGE_LINKS, { label: 'Register Interest', href: '#register' }].map((link, i) => (
                 <motion.a
                   key={link.href}
-                  href={link.href}
+                  href={link.href.startsWith('#') ? sectionHref(link.href) : link.href}
                   onClick={(e) => {
+                    if (!link.href.startsWith('#')) return setOpen(false)
                     e.preventDefault()
                     go(link.href)
                   }}
